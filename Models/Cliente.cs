@@ -11,7 +11,7 @@ namespace Model
         public int Idade => CalcularIdade();
         #endregion
 
-        public Cliente(string nome, string sobrenome, string cpf, DateOnly datanascimento)
+        private Cliente(string nome, string sobrenome, string cpf, DateOnly datanascimento)
         {
             Nome = nome;
             SobreNome = sobrenome;

@@ -1,0 +1,47 @@
+using Model;
+
+public class Conta
+{
+    #region Atributos
+    public int Numero {get; private set;}
+    public double Saldo {get; protected set;}
+    public Cliente Titular {get; private set;}
+    #endregion
+
+    public Conta(int numero, Cliente titular)
+    {
+        Numero = numero;
+        Titular = titular;
+        Saldo = 0.0;
+    }
+
+    public virtual void Sacar(double valorSaque)
+    {
+        if(valorSaque <= 0)
+        {
+            Console.WriteLine("Valor inválido.");
+            return;
+        }
+
+        if(valorSaque > Saldo)
+        {
+            Console.WriteLine($"Saldo insuficiente. Saldo atual: {Saldo:F2}");
+            return;
+        }
+
+        Saldo -= valorSaque; 
+        Console.WriteLine($"Saque realizado com sucesso. Saldo atual: {Saldo:F2}");
+    }
+
+    public void Depositar(double valorDeposito)
+    {
+        if(valorDeposito <= 0)
+        {
+            Console.WriteLine("Valor inválido");
+            return;
+        }
+
+        Saldo += valorDeposito;
+        Console.WriteLine($"Depósito realizado com sucesso. Saldo atual: {Saldo:F2}");
+    }
+}
