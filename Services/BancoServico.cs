@@ -45,32 +45,57 @@ namespace Services{
                 case 2:
                     ChamarMetodosPoupanca();
                     break;
+
+                case 3:
+                    ChamarMetodosCorrente();
+                    break;
+
             }
+        }
+
+        // Este método exibe as opções de menu tanto da conta corrente quanto da poupança de forma dinâmica (retorna a opção)
+        public int ExibirMenuContas(string nomeMenu, string[] listaOpcoes, string nomeTipoConta)
+        {
+            bool continuar = true;
+            Interface.DecorarModulo(nomeMenu);
+
+            int indiceOpcoes = 0;
+            string ultimaOpcao = listaOpcoes.Last();
+            while(continuar)
+            {
+                Console.WriteLine($"{indiceOpcoes + 1} - {listaOpcoes[indiceOpcoes]}");
+                if(listaOpcoes[indiceOpcoes].Equals(ultimaOpcao)){
+                    Console.WriteLine("0 - Sair");
+                    Console.Write("\nInsira a opção desejada: ");
+                    int opcaoSelecionada = int.Parse(Console.ReadLine());
+
+                    if(opcaoSelecionada == 0)
+                    {
+                        continuar = false;
+                        Console.WriteLine($"\nEncerrando operações de {nomeTipoConta}...\n");
+                        return 0;
+                    }
+
+                    return opcaoSelecionada;
+                }
+                
+                indiceOpcoes ++;
+            }
+
+            return 0;
+        }
+
+        public void ChamarMetodosCorrente()
+        {
+            string[] opcoesCorrente ={"Adicionar Nova Conta", "Sacar", "Depositar"};
+            int opcaoEscolhida = ExibirMenuContas("MENU POUPANÇA", opcoesCorrente, "conta corrente");
         }
 
         public void ChamarMetodosPoupanca()
         {
-            bool continuar = true;
-            Interface.DecorarModulo("MENU POUPANÇA");
-
-            while(continuar){
-                Console.WriteLine("1 - Adicionar Nova Conta");
-                Console.WriteLine("2 - Sacar");
-                Console.WriteLine("3 - Depositar");
-                Console.WriteLine("0 - Sair");
-
-                Console.Write("\nInsira a opção desejada: ");
-                int opcaoInternaPoupanca = int.Parse(Console.ReadLine());
-
-                if(opcaoInternaPoupanca == 0)
-                {
-                    continuar = false;
-                    Console.WriteLine("Encerrando operações de poupança...\n");
-                    return;
-                }
-
-                MetodosPoupanca(opcaoInternaPoupanca);
-            }
+            string[] opcoesCorrente ={"Adicionar Nova Conta", "Sacar", "Depositar"};
+            int opcaoEscolhida = ExibirMenuContas("MENU CORRENTE", opcoesCorrente, "conta poupança");
+            MetodosPoupanca(opcaoEscolhida);
         }
 
         public void MetodosPoupanca(int opcao)
