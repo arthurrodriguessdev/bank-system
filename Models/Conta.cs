@@ -19,13 +19,13 @@ public class Conta
     {
         if(valorSaque <= 0)
         {
-            Console.WriteLine("Valor inválido.");
+            Console.WriteLine("\nValor inválido.\n");
             return;
         }
 
         if(valorSaque > Saldo)
         {
-            Console.WriteLine($"Saldo insuficiente. Saldo atual: {Saldo:F2}");
+            Console.WriteLine($"\nSaldo insuficiente. Saldo atual: {Saldo:F2}\n");
             return;
         }
 

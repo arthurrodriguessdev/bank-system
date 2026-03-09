@@ -89,6 +89,25 @@ namespace Services{
         {
             string[] opcoesCorrente ={"Adicionar Nova Conta", "Sacar", "Depositar"};
             int opcaoEscolhida = ExibirMenuContas("MENU POUPANÇA", opcoesCorrente, "conta corrente");
+            MetodosCorrente(opcaoEscolhida);
+        }
+
+        public void MetodosCorrente(int opcao)
+        {
+            switch (opcao)
+            {
+                case 1:
+                    RegistrarContaPoupanca();
+                    break;
+
+                case 2:
+                    Sacar("SACAR CORRENTE");
+                    break;
+                
+                case 3:
+                    Depositar("DEPOSITAR CORRENTE");
+                    break;
+            }
         }
 
         public void ChamarMetodosPoupanca()
@@ -126,13 +145,16 @@ namespace Services{
             return listaClientes.Count > 0;
         }
 
-        public void RegistrarContaPoupanca()
+        // Esta função realiza o get dos dados da nova conta, seja ela poupança ou corrente
+        public Dictionary<string, object> GetDadosNovaConta(string tipoConta)
         {
-            Interface.DecorarModulo("CADASTRO CONTA POUPANÇA");
+            Dictionary<string, object>dadosConta = new Dictionary<string, object>();
+
+            Interface.DecorarModulo($"CADASTRO CONTA {tipoConta.ToUpper()}");
             if(!ExisteClientesCadastrados())
             {
                 Console.WriteLine("\nAntes de criar uma conta, é preciso ter clientes titulares cadastrados.\n");
-                return;
+                return dadosConta; // Retorna o dicionário vazio
             }
 
             Console.Write("Informe o número da conta: ");
@@ -145,13 +167,34 @@ namespace Services{
             if(indiceCliente <= 0 || indiceCliente > listaClientes.Count)
             {
                 Console.WriteLine("\nCliente inválido.\n");
-                return;
+                return dadosConta; // Retorna o dicionário vazio
             }
 
-            Cliente novoTitularConta = listaClientes[indiceCliente - 1];
-            ContaPoupanca novaContaPoupanca = new ContaPoupanca(numero, novoTitularConta);
+            dadosConta.Add("indiceCliente", indiceCliente);
+            dadosConta.Add("numeroConta", numero);
+            return dadosConta; // Retorna o dicionário preenchido com índice e número de conta
+        }
+        public void RegistrarContaPoupanca()
+        {   
+            Dictionary<string, object>dadosConta = GetDadosNovaConta("POUPANÇA");
+            if(!dadosConta.Any() || dadosConta.Count < 2){return;} // Se não retornar a quantidade que se espera, já sai
 
-            AdicionarContaPoupancaLista(novoTitularConta, numero, novaContaPoupanca);
+            Cliente novoTitularConta = listaClientes[(int) dadosConta["indiceCliente"] - 1];
+            ContaPoupanca novaContaPoupanca = new ContaPoupanca((int) dadosConta["numeroConta"], novoTitularConta);
+
+            AdicionarContaLista(novoTitularConta, (int) dadosConta["numeroConta"], novaContaPoupanca);
+            return;
+        }
+
+        public void RegistrarContaCorrente()
+        {   
+            Dictionary<string, object>dadosConta = GetDadosNovaConta("CORRENTE");
+            if(!dadosConta.Any() || dadosConta.Count < 2){return;} // Se não retornar a quantidade que se espera, já sai
+
+            Cliente novoTitularConta = listaClientes[(int) dadosConta["indiceCliente"] - 1];
+            ContaCorrente novaContaCorrente = new ContaCorrente((int) dadosConta["numeroConta"], novoTitularConta);
+
+            AdicionarContaLista(novoTitularConta, (int) dadosConta["numeroConta"], novaContaCorrente);
             return;
         }
 
@@ -191,7 +234,7 @@ namespace Services{
             Console.WriteLine("\nCliente cadastrado com sucesso.\n");
         }
 
-        public void AdicionarContaPoupancaLista(Cliente novoTitularConta, int numero, ContaPoupanca novaConta)
+        public void AdicionarContaLista(Cliente novoTitularConta, int numero, Conta novaConta)
         {
             if(ExisteContasCadastradas()){
                 for(int i = 0; i < listaContas.Count; i++)
