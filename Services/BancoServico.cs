@@ -1,0 +1,248 @@
+using Model;
+using Utils;
+using System.Collections.Generic;
+
+namespace Services{
+    public class BancoServico
+    {
+        #region Listas 
+        List<Conta> listaContas = new List<Conta>();
+        List<Cliente> listaClientes = new List<Cliente>();
+        #endregion
+
+        public void Menu()
+        {   
+            bool continuar = true;
+            while(continuar){
+                Console.WriteLine("1 - Registrar Cliente");
+                Console.WriteLine("2 - Conta Poupança");
+                Console.WriteLine("3 - Conta Corrente");
+                Console.WriteLine("0 - Sair");
+
+                Console.Write("\nInsira a opção desejada: ");
+                int opcaoInterna = int.Parse(Console.ReadLine());
+
+                if(opcaoInterna == 0)
+                {
+                    continuar = false;
+                    Console.WriteLine("Encerrando operações...");
+                    return;
+                }
+                
+                ChamarMetodos(opcaoInterna);
+            }
+        }
+
+        // Recebe o serviço desejado (opcao) e controla a chamada dos métodos
+        public void ChamarMetodos(int opcao)
+        {
+            switch (opcao)
+            {
+                case 1:
+                    RegistrarCliente();
+                    break;
+                
+                case 2:
+                    ChamarMetodosPoupanca();
+                    break;
+            }
+        }
+
+        public void ChamarMetodosPoupanca()
+        {
+            bool continuar = true;
+            Interface.DecorarModulo("MENU POUPANÇA");
+
+            while(continuar){
+                Console.WriteLine("1 - Adicionar Nova Conta");
+                Console.WriteLine("2 - Sacar");
+                Console.WriteLine("3 - Depositar");
+                Console.WriteLine("0 - Sair");
+
+                Console.Write("\nInsira a opção desejada: ");
+                int opcaoInternaPoupanca = int.Parse(Console.ReadLine());
+
+                if(opcaoInternaPoupanca == 0)
+                {
+                    continuar = false;
+                    Console.WriteLine("Encerrando operações de poupança...\n");
+                    return;
+                }
+
+                MetodosPoupanca(opcaoInternaPoupanca);
+            }
+        }
+
+        public void MetodosPoupanca(int opcao)
+        {
+            switch (opcao)
+            {
+                case 1:
+                    RegistrarContaPoupanca();
+                    break;
+
+                case 2:
+                    Sacar("SACAR POUPANÇA");
+                    break;
+                
+                case 3:
+                    Depositar("DEPOSITAR POUPANÇA");
+                    break;
+            }
+        }
+
+        public bool ExisteContasCadastradas()
+        {
+            return listaContas.Count > 0;
+        }
+
+        public bool ExisteClientesCadastrados()
+        {
+            return listaClientes.Count > 0;
+        }
+
+        public void RegistrarContaPoupanca()
+        {
+            Interface.DecorarModulo("CADASTRO CONTA POUPANÇA");
+            if(!ExisteClientesCadastrados())
+            {
+                Console.WriteLine("\nAntes de criar uma conta, é preciso ter clientes titulares cadastrados.\n");
+                return;
+            }
+
+            Console.Write("Informe o número da conta: ");
+            int numero = int.Parse(Console.ReadLine());
+
+            ExibirListaClientes();
+            Console.Write("\nInforme o número equivalente ao cliente titular da conta: ");
+            int indiceCliente = int.Parse(Console.ReadLine());
+
+            if(indiceCliente <= 0 || indiceCliente > listaClientes.Count)
+            {
+                Console.WriteLine("\nCliente inválido.\n");
+                return;
+            }
+
+            Cliente novoTitularConta = listaClientes[indiceCliente - 1];
+            ContaPoupanca novaContaPoupanca = new ContaPoupanca(numero, novoTitularConta);
+
+            AdicionarContaPoupancaLista(novoTitularConta, numero, novaContaPoupanca);
+            return;
+        }
+
+        public void RegistrarCliente()
+        {
+            Interface.DecorarModulo("CADASTRO DE CLIENTE");
+
+            #region Entrada de Dados Cliente
+            Console.Write("Informe o nome do cliente: ");
+            string nome = Console.ReadLine();
+            Console.Write("Informe o sobrenome do cliente: ");
+            string sobrenome = Console.ReadLine();
+            Console.Write("Informe o CPF do cliente: ");
+            string cpf = Console.ReadLine();
+            Console.Write("Informe a data de nascimento do cliente: ");
+            DateOnly dataNascimento = DateOnly.Parse(Console.ReadLine());
+            #endregion
+
+            Cliente novoCliente = new Cliente(nome, sobrenome, cpf, dataNascimento);
+            AdicionarClienteLista(novoCliente);
+        }
+
+        public void AdicionarClienteLista(Cliente novoCliente)
+        {
+            if(ExisteClientesCadastrados()){
+                for(int i = 0; i < listaClientes.Count; i++)
+                {
+                    if(listaClientes[i].Cpf == novoCliente.Cpf)
+                    {
+                        Console.WriteLine("\nJá existe um cliente com esse CPF cadastrado.\n");
+                        return;
+                    }
+                }
+            }
+
+            listaClientes.Add(novoCliente);
+            Console.WriteLine("\nCliente cadastrado com sucesso.\n");
+        }
+
+        public void AdicionarContaPoupancaLista(Cliente novoTitularConta, int numero, ContaPoupanca novaConta)
+        {
+            if(ExisteContasCadastradas()){
+                for(int i = 0; i < listaContas.Count; i++)
+                {
+                    if(listaContas[i].Titular == novoTitularConta || listaContas[i].Numero == numero)
+                    {
+                        Console.WriteLine("\nJá existe uma conta com esse número ou desse titular.\n");
+                        return;
+                    }
+                }
+            }
+
+            listaContas.Add(novaConta);
+            Console.WriteLine("\nConta adicionada com sucesso!\n");
+        }
+
+        #region Ações Genéricas de Contas
+        //Essa função é genérica, sendo responsável por chamar métodos de buscar a conta e pegar dados (saque e depósito)
+        public Conta IntermediadorAcaoConta(string tituloInterface, string nomeAcao)
+        {
+            Interface.DecorarModulo(tituloInterface);
+            if (!ExisteContasCadastradas())
+            {
+                Console.WriteLine("Não existe contas cadastradas ainda.\n");
+                return null;
+            } 
+
+            Console.Write($"Informe o número da conta para {nomeAcao}: ");
+            int numero = int.Parse(Console.ReadLine());
+
+            Conta contaEncontrada = Geral.BuscarContas(numero, ExisteContasCadastradas(), listaContas);
+            return contaEncontrada;
+        }
+        public void Depositar(string titulo)
+        {
+            Conta contaBuscada = IntermediadorAcaoConta(titulo, "depósito");
+            if(contaBuscada != null){
+                Console.Write("Informe o valor de depósito: ");
+                double valorDeposito = double.Parse(Console.ReadLine());
+                contaBuscada.Depositar(valorDeposito);
+                return;
+            }
+
+            return;
+        }
+
+        public void Sacar(string titulo)
+        {
+            Conta contaBuscada = IntermediadorAcaoConta(titulo, "saque");
+            if(contaBuscada != null){
+                Console.Write("Informe o valor de saque: ");
+                double valorSaque = double.Parse(Console.ReadLine());
+                contaBuscada.Sacar(valorSaque);
+                return;
+            }
+
+            return; 
+        }
+        #endregion
+
+        public void ExibirListaClientes()
+        {
+            if(listaClientes.Count != 0)
+            {
+                Cliente clienteAtual;
+                for(int i = 0; i < listaClientes.Count; i++)
+                {
+                    clienteAtual = listaClientes[i];
+                    Console.WriteLine($"{i + 1} - {clienteAtual.ExibirDados()}");
+                }
+
+                return;
+            }
+
+            Console.WriteLine("Não há clientes cadastrados\n");
+            return;
+        }
+    }
+}

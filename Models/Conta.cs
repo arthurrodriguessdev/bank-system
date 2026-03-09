@@ -30,7 +30,7 @@ public class Conta
         }
 
         Saldo -= valorSaque; 
-        Console.WriteLine($"Saque realizado com sucesso. Saldo atual: {Saldo:F2}");
+        Console.WriteLine($"\nSaque realizado com sucesso. Saldo atual: {Saldo:F2}\n");
     }
 
     public void Depositar(double valorDeposito)
@@ -42,6 +42,6 @@ public class Conta
         }
 
         Saldo += valorDeposito;
-        Console.WriteLine($"Depósito realizado com sucesso. Saldo atual: {Saldo:F2}");
+        Console.WriteLine($"\nDepósito realizado com sucesso. Saldo atual: {Saldo:F2}\n");
     }
 }

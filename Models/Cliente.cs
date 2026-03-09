@@ -11,15 +11,15 @@ namespace Model
         public int Idade => CalcularIdade();
         #endregion
 
-        private Cliente(string nome, string sobrenome, string cpf, DateOnly datanascimento)
+        public Cliente(string nome, string sobrenome, string cpf, DateOnly dataNascimento)
         {
             Nome = nome;
             SobreNome = sobrenome;
             Cpf = cpf;
-            DataNascimento = datanascimento;
+            DataNascimento = dataNascimento;
         }
 
-        public int CalcularIdade()
+        private int CalcularIdade()
         {   
             DateTime hoje = DateTime.Now;
             int idade = hoje.Year - DataNascimento.Year;
@@ -30,6 +30,11 @@ namespace Model
             }
 
             return idade;
+        }
+
+        public string ExibirDados()
+        {
+            return $"{Nome} ({Cpf})";
         }
     }
 }
