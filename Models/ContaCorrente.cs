@@ -35,7 +35,7 @@ public class ContaCorrente : Conta
             return;
         }
 
-        Saldo -= (valorSaque + CalcularTaxaSaque(valorSaque)); 
+        Saldo -= valorSaque + CalcularTaxaSaque(valorSaque); 
         Console.WriteLine($"Saque realizado com sucesso. Saldo com limite aplicado: R${(Saldo + Limite):F2}");
     }
 }
