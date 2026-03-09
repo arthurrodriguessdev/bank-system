@@ -34,7 +34,7 @@ namespace Model
 
         public string ExibirDados()
         {
-            return $"{Nome} ({Cpf})";
+            return $"{Nome} {SobreNome} ({Cpf})";
         }
     }
 }

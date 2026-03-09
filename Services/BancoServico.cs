@@ -88,7 +88,7 @@ namespace Services{
         public void ChamarMetodosCorrente()
         {
             string[] opcoesCorrente ={"Adicionar Nova Conta", "Sacar", "Depositar"};
-            int opcaoEscolhida = ExibirMenuContas("MENU POUPANÇA", opcoesCorrente, "conta corrente");
+            int opcaoEscolhida = ExibirMenuContas("MENU CORRENTE", opcoesCorrente, "conta corrente");
             MetodosCorrente(opcaoEscolhida);
         }
 
@@ -97,15 +97,15 @@ namespace Services{
             switch (opcao)
             {
                 case 1:
-                    RegistrarContaPoupanca();
+                    RegistrarContaCorrente();
                     break;
 
                 case 2:
-                    Sacar("SACAR CORRENTE");
+                    Sacar("SACAR CORRENTE", typeof(ContaCorrente));
                     break;
                 
                 case 3:
-                    Depositar("DEPOSITAR CORRENTE");
+                    Depositar("DEPOSITAR CORRENTE", typeof(ContaCorrente));
                     break;
             }
         }
@@ -126,11 +126,11 @@ namespace Services{
                     break;
 
                 case 2:
-                    Sacar("SACAR POUPANÇA");
+                    Sacar("SACAR POUPANÇA", typeof(ContaPoupanca));
                     break;
                 
                 case 3:
-                    Depositar("DEPOSITAR POUPANÇA");
+                    Depositar("DEPOSITAR POUPANÇA", typeof(ContaPoupanca));
                     break;
             }
         }
@@ -209,7 +209,7 @@ namespace Services{
             string sobrenome = Console.ReadLine();
             Console.Write("Informe o CPF do cliente: ");
             string cpf = Console.ReadLine();
-            Console.Write("Informe a data de nascimento do cliente: ");
+            Console.Write("Informe a data de nascimento do cliente (AAAA-MM-DD): ");
             DateOnly dataNascimento = DateOnly.Parse(Console.ReadLine());
             #endregion
 
@@ -253,7 +253,7 @@ namespace Services{
 
         #region Ações Genéricas de Contas
         //Essa função é genérica, sendo responsável por chamar métodos de buscar a conta e pegar dados (saque e depósito)
-        public Conta IntermediadorAcaoConta(string tituloInterface, string nomeAcao)
+        public Conta IntermediadorAcaoConta(string tituloInterface, string nomeAcao, Type tipoConta)
         {
             Interface.DecorarModulo(tituloInterface);
             if (!ExisteContasCadastradas())
@@ -265,12 +265,12 @@ namespace Services{
             Console.Write($"Informe o número da conta para {nomeAcao}: ");
             int numero = int.Parse(Console.ReadLine());
 
-            Conta contaEncontrada = Geral.BuscarContas(numero, ExisteContasCadastradas(), listaContas);
+            Conta contaEncontrada = Geral.BuscarContas(numero, ExisteContasCadastradas(), listaContas, tipoConta);
             return contaEncontrada;
         }
-        public void Depositar(string titulo)
+        public void Depositar(string titulo, Type tipoConta)
         {
-            Conta contaBuscada = IntermediadorAcaoConta(titulo, "depósito");
+            Conta contaBuscada = IntermediadorAcaoConta(titulo, "depósito", tipoConta);
             if(contaBuscada != null){
                 Console.Write("Informe o valor de depósito: ");
                 double valorDeposito = double.Parse(Console.ReadLine());
@@ -281,9 +281,9 @@ namespace Services{
             return;
         }
 
-        public void Sacar(string titulo)
+        public void Sacar(string titulo, Type tipoConta)
         {
-            Conta contaBuscada = IntermediadorAcaoConta(titulo, "saque");
+            Conta contaBuscada = IntermediadorAcaoConta(titulo, "saque", tipoConta);
             if(contaBuscada != null){
                 Console.Write("Informe o valor de saque: ");
                 double valorSaque = double.Parse(Console.ReadLine());
