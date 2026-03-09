@@ -72,4 +72,10 @@ LinkeIn: www.linkedin.com/in/arthur-rodriguesx
 
 1. Clone o repositório:  
 ```bash
-git clone https://github.com/seuusuario/seuprojeto.git
+git clone https://github.com/arthurrodriguessdev/bank-system.git
+```
+
+2. Rodar a aplicação:
+```bash
+dotnet run
+```
