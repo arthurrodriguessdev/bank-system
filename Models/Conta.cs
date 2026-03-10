@@ -6,6 +6,7 @@ public class Conta
     public int Numero {get; private set;}
     public double Saldo {get; protected set;}
     public Cliente Titular {get; private set;}
+    private DateTime DataAbertura {get; private set;}
     #endregion
 
     public Conta(int numero, Cliente titular)
@@ -13,6 +14,7 @@ public class Conta
         Numero = numero;
         Titular = titular;
         Saldo = 0.0;
+        DataAbertura = DataAbertura.Now;
     }
 
     public virtual void Sacar(double valorSaque)
