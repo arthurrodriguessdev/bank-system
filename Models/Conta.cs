@@ -1,3 +1,6 @@
+using System.Collections.Generic;
+using Enums;
+
 namespace Models{
     public abstract class Conta
     {
@@ -7,6 +10,7 @@ namespace Models{
         public Cliente Titular {get; private set;}
         public DateTime DataAbertura {get; private set;}
         private readonly double VALOR_MINIMO_DEPOSITO = 10.0;
+        public List<Movimentacao>listaMovimentacoes {get; private set;}
         #endregion
 
         public Conta(int numero, Cliente titular)
@@ -57,6 +61,23 @@ namespace Models{
 
             Saldo -= valorTransferir;
             contaDestino.Depositar(valorTransferir);
+        }
+
+        public void RegistrarMovimentao(TipoMovimentacao tipo, double valor = 0){
+            Movimentacao novaMovimentacao;
+
+            if(tipo != Enums.TipoMovimentacao.ABERTURA_CONTA && valor <= 0){
+                throw new ArgumentException("Movimentações devem possuir valor.");
+
+            } else if(tipo == Enums.TipoMovimentacao.ABERTURA_CONTA){
+                novaMovimentacao = new Movimentacao(tipo);
+            }
+            
+            else{
+                novaMovimentacao = new Movimentacao(tipo, valor);
+            }
+
+            listaMovimentacoes.Add(novaMovimentacao);
         }
 
         public abstract void ImprimirExtrato();
