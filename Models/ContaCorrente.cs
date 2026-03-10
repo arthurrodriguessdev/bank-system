@@ -26,16 +26,15 @@ public class ContaCorrente : Conta
     {
         if(valorSaque <= 0)
         {
-            Console.WriteLine("Valor inválido.");
-            return;
+            throw new ArgumentOutOfRangeException("O valor para saque precisa ser positivo");
 
         } else if((Saldo + Limite) < valorSaque)
         {
-            Console.WriteLine($"Valor indisponível para saque. Saldo com limite aplicado: R${(Saldo + Limite):F2}");
-            return;
+            throw new InvalidOperationException(
+                $"Saldo insuficiente para saque. Saldo atual com limite: R${(Saldo + Limite):F2}"
+            );
         }
 
-        Saldo -= valorSaque + CalcularTaxaSaque(valorSaque); 
-        Console.WriteLine($"\nSaque realizado com sucesso. Saldo com limite aplicado: R${(Saldo + Limite):F2}\n");
+        Saldo -= valorSaque + CalcularTaxaSaque(valorSaque);
     }
 }

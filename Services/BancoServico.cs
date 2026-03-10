@@ -280,7 +280,15 @@ namespace Services{
             if(contaBuscada != null){
                 Console.Write("Informe o valor de depósito: ");
                 double valorDeposito = double.Parse(Console.ReadLine());
-                contaBuscada.Depositar(valorDeposito);
+
+                try{
+                    contaBuscada.Depositar(valorDeposito);
+                    Console.WriteLine($"Depósito realizado com sucesso. Saldo atual: {contaBuscada.Saldo:F2}\n");
+
+                } catch(Exception ex){
+                    Console.WriteLine(ex.Message);
+                }
+                
                 return;
             }
 
@@ -293,8 +301,14 @@ namespace Services{
             if(contaBuscada != null){
                 Console.Write("Informe o valor de saque: ");
                 double valorSaque = double.Parse(Console.ReadLine());
-                contaBuscada.Sacar(valorSaque);
-                return;
+
+                try{
+                    contaBuscada.Sacar(valorSaque);
+                    Console.WriteLine($"\nSaque realizado com sucesso. Saldo atual: {contaBuscada.Saldo:F2}\n");
+
+                } catch(Exception ex){
+                    Console.WriteLine(ex.Message);
+                }
             }
 
             return; 

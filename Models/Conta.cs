@@ -22,18 +22,15 @@ public class Conta
     {
         if(valorSaque <= 0)
         {
-            Console.WriteLine("\nValor inválido.\n");
-            return;
+            throw new ArgumentOutOfRangeException("O valor para saque precisa ser positivo");
         }
 
         if(valorSaque > Saldo)
         {
-            Console.WriteLine($"\nSaldo insuficiente. Saldo atual: {Saldo:F2}\n");
-            return;
+            throw new InvalidOperationException($"Saldo insuficiente. Saldo atual: {Saldo:F2}");
         }
 
         Saldo -= valorSaque; 
-        Console.WriteLine($"\nSaque realizado com sucesso. Saldo atual: {Saldo:F2}\n");
     }
 
     public void Depositar(double valorDeposito)
@@ -44,10 +41,9 @@ public class Conta
         } 
         
         if(valorDeposito < VALOR_MINIMO_DEPOSITO){
-            throw new InvalidOperationException($"O valor mínimo para depósit é de R${VALOR_MINIMO_DEPOSITO}");
+            throw new InvalidOperationException($"O valor mínimo para depósito é de R${VALOR_MINIMO_DEPOSITO}");
         }
 
         Saldo += valorDeposito;
-        Console.WriteLine($"Depósito realizado com sucesso. Saldo atual: {Saldo:F2}\n");
     }
 }
