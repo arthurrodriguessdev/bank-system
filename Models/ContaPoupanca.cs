@@ -1,31 +1,31 @@
-using Model;
-
-public class ContaPoupanca : Conta
-{
-    #region Atributos
-    public double TaxaRendimento => 0.02;
-    #endregion
-    public ContaPoupanca(int numero, Cliente titular) : base(numero, titular){}
-
-    public void RenderJuros()
+namespace Models{
+    public class ContaPoupanca : Conta
     {
-        Saldo += Saldo * TaxaRendimento;
-        Console.WriteLine("Juros aplicados com sucesso.");
-    }
+        #region Atributos
+        public double TaxaRendimento => 0.02;
+        #endregion
+        public ContaPoupanca(int numero, Cliente titular) : base(numero, titular){}
 
-    public override void ImprimirExtrato()
-    {
-        Console.WriteLine($"\n===== EXTRATO DA CONTA {Numero} =====");
+        public void RenderJuros()
+        {
+            Saldo += Saldo * TaxaRendimento;
+            Console.WriteLine("Juros aplicados com sucesso.");
+        }
 
-        Console.WriteLine("\n--- DADOS DA CONTA ---");
-        Console.WriteLine("TIPO DE CONTA: POUPANÇA");
-        Console.WriteLine($"SALDO ATUAL: {Saldo:F2}");
-        Console.WriteLine($"TAXA DE RENDIMENTO: {TaxaRendimento}");
+        public override void ImprimirExtrato()
+        {
+            Console.WriteLine($"\n===== EXTRATO DA CONTA {Numero} =====");
 
-        Console.WriteLine("\n--- DADOS DO TITULAR ---");
-        Console.WriteLine($"NOME: {Titular.Nome}");
-        Console.WriteLine($"CPF: {Titular.Cpf}");
+            Console.WriteLine("\n--- DADOS DA CONTA ---");
+            Console.WriteLine("TIPO DE CONTA: POUPANÇA");
+            Console.WriteLine($"SALDO ATUAL: {Saldo:F2}");
+            Console.WriteLine($"TAXA DE RENDIMENTO: {TaxaRendimento}");
 
-        Console.WriteLine("\n==============================\n");
+            Console.WriteLine("\n--- DADOS DO TITULAR ---");
+            Console.WriteLine($"NOME: {Titular.Nome}");
+            Console.WriteLine($"CPF: {Titular.Cpf}");
+
+            Console.WriteLine("\n==============================\n");
+        }
     }
 }

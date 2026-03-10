@@ -24,7 +24,7 @@ namespace Models{
             string data = DataHoraMovimentacao.ToString("dd/MM/yyyy");
             string horasMinutos = DataHoraMovimentacao.ToString("HH:mm:ss");
 
-            if(ValorMovimentacao == null){
+            if(ValorMovimentacao != null){
                 string valor = $"{ValorMovimentacao}";
 
                 if(this.TipoMovimentacao == TipoMovimentacao.SAQUE){
@@ -34,7 +34,8 @@ namespace Models{
                     valor = $"+{ValorMovimentacao}";
                 }
 
-                return $"{data} às {horasMinutos}h | {TipoMovimentacao} - R$ {valor}";
+                // Ação de: DEPOSITO, SAQUE E TRANSFERENCIA
+                return $"{data} às {horasMinutos}h | {TipoMovimentacao}: R$ {valor}";
             } 
 
             // Ação de: ABERTURA_CONTA
