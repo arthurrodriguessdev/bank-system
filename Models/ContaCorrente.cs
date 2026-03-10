@@ -37,4 +37,20 @@ public class ContaCorrente : Conta
 
         Saldo -= valorSaque + CalcularTaxaSaque(valorSaque);
     }
+
+    public override void ImprimirExtrato()
+    {
+        Console.WriteLine($"\n===== EXTRATO DA CONTA {Numero} =====");
+
+        Console.WriteLine("\n--- DADOS DA CONTA ---");
+        Console.WriteLine("TIPO DE CONTA: CORRENTE");
+        Console.WriteLine($"SALDO ATUAL: {Saldo:F2}");
+        Console.WriteLine($"LIMITE ATUAL: {Limite:F2}");
+
+        Console.WriteLine("\n--- DADOS DO TITULAR ---");
+        Console.WriteLine($"NOME: {Titular.Nome}");
+        Console.WriteLine($"CPF: {Titular.Cpf}");
+
+        Console.WriteLine("\n==============================\n");
+    }
 }

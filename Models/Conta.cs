@@ -1,6 +1,6 @@
 using Model;
 
-public class Conta
+public abstract class Conta
 {
     #region Atributos
     public int Numero {get; private set;}
@@ -59,4 +59,6 @@ public class Conta
         Saldo -= valorTransferir;
         contaDestino.Depositar(valorTransferir);
     }
+
+    public abstract void ImprimirExtrato();
 }
