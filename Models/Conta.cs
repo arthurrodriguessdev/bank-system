@@ -6,7 +6,8 @@ public class Conta
     public int Numero {get; private set;}
     public double Saldo {get; protected set;}
     public Cliente Titular {get; private set;}
-    private DateTime DataAbertura {get; private set;}
+    public DateTime DataAbertura {get; private set;}
+    private readonly double VALOR_MINIMO_DEPOSITO = 10.0;
     #endregion
 
     public Conta(int numero, Cliente titular)
@@ -14,7 +15,7 @@ public class Conta
         Numero = numero;
         Titular = titular;
         Saldo = 0.0;
-        DataAbertura = DataAbertura.Now;
+        DataAbertura = DateTime.Now;
     }
 
     public virtual void Sacar(double valorSaque)
@@ -39,11 +40,14 @@ public class Conta
     {
         if(valorDeposito <= 0)
         {
-            Console.WriteLine("Valor inválido");
-            return;
+            throw new ArgumentOutOfRangeException("O valor do depósito deve ser maior que zero.");
+        } 
+        
+        if(valorDeposito < VALOR_MINIMO_DEPOSITO){
+            throw new InvalidOperationException($"O valor mínimo para depósit é de R${VALOR_MINIMO_DEPOSITO}");
         }
 
         Saldo += valorDeposito;
-        Console.WriteLine($"\nDepósito realizado com sucesso. Saldo atual: {Saldo:F2}\n");
+        Console.WriteLine($"Depósito realizado com sucesso. Saldo atual: {Saldo:F2}\n");
     }
 }

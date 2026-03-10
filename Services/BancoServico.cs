@@ -113,7 +113,7 @@ namespace Services{
         public void ChamarMetodosPoupanca()
         {
             string[] opcoesCorrente ={"Adicionar Nova Conta", "Sacar", "Depositar"};
-            int opcaoEscolhida = ExibirMenuContas("MENU CORRENTE", opcoesCorrente, "conta poupança");
+            int opcaoEscolhida = ExibirMenuContas("MENU POUPANÇA", opcoesCorrente, "conta poupança");
             MetodosPoupanca(opcaoEscolhida);
         }
 
