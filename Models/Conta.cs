@@ -46,4 +46,23 @@ public class Conta
 
         Saldo += valorDeposito;
     }
+
+    public void Transferir(Conta contaDestino, double valorTransferir){
+        if(contaDestino == null){
+            throw new ArgumentNullException("A conta de destino não foi encontrada.");
+        }
+
+        else if(valorTransferir <= 0 || valorTransferir < VALOR_MINIMO_DEPOSITO){
+            throw new ArgumentOutOfRangeException(
+                $"O valor de transferência deve ser maior que zero e maior que R${VALOR_MINIMO_DEPOSITO}"
+            );
+        }
+
+        else if(valorTransferir > Saldo){
+            throw new InvalidOperationException("A conta de origem não possui esse valor para transferir");
+        }
+
+        Saldo -= valorTransferir;
+        contaDestino.Saldo += valorTransferir;
+    }
 }
