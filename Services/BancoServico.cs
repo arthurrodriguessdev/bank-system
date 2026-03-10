@@ -209,6 +209,12 @@ namespace Services{
             string sobrenome = Console.ReadLine();
             Console.Write("Informe o CPF do cliente: ");
             string cpf = Console.ReadLine();
+
+            if(!Geral.ValidarCPF(cpf)){
+                Console.WriteLine("\nO CPF deve ter exatamente 11 caracteres.\n");
+                return;
+            }
+
             Console.Write("Informe a data de nascimento do cliente (AAAA-MM-DD): ");
             DateOnly dataNascimento = DateOnly.Parse(Console.ReadLine());
             #endregion

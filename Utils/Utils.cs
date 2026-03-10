@@ -36,5 +36,13 @@ namespace Utils{
 
             return contaEncontrada;
         }
+
+        public static bool ValidarCPF(string cpf){
+            if(cpf.Length != 11){
+                return false;
+            }
+
+            return true;
+        }
     }
 }
