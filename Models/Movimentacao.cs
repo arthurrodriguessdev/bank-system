@@ -24,7 +24,7 @@ namespace Models{
             string data = DataHoraMovimentacao.ToString("dd/MM/yyyy");
             string horasMinutos = DataHoraMovimentacao.ToString("HH:mm:ss");
 
-            if(ValorMovimentacao != null){
+            if(ValorMovimentacao > 0.0){
                 string valor = $"{ValorMovimentacao}";
 
                 if(this.TipoMovimentacao == TipoMovimentacao.SAQUE){

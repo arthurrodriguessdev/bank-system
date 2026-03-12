@@ -11,7 +11,7 @@ namespace Utils{
 
     public class Geral
     {
-        public static Conta BuscarContas(int numeroConta, bool existeContas, List<Conta>listaContas, Type tipoConta)
+        public static Conta BuscarContas(int numeroConta, bool existeContas, List<Conta>listaContas, Type tipoConta = null)
         {
             if (!existeContas)
             {
@@ -22,10 +22,20 @@ namespace Utils{
             Conta contaEncontrada = null;
             for(int i = 0; i < listaContas.Count; i++)
             {
-                if(listaContas[i].Numero == numeroConta && listaContas[i].GetType() == tipoConta)
+                if(tipoConta != null){
+                    if(listaContas[i].Numero == numeroConta && listaContas[i].GetType() == tipoConta)
+                    {
+                        contaEncontrada = listaContas[i];
+                        break;
+                    }
+                }
+                else
                 {
-                    contaEncontrada = listaContas[i];
-                    break;
+                    if(listaContas[i].Numero == numeroConta)
+                    {
+                        contaEncontrada = listaContas[i];
+                        break;   
+                    }
                 }
             }
 

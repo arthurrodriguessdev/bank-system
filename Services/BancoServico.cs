@@ -54,6 +54,10 @@ namespace Services{
                 case 4:
                     ChamarImprimirExtrato(typeof(ContaCorrente));
                     break;
+                
+                case 5:
+                    ChamarTransferir(typeof(ContaCorrente));
+                    break;
 
             }
         }
@@ -92,7 +96,7 @@ namespace Services{
 
         public void ChamarMetodosCorrente()
         {
-            string[] opcoesCorrente ={"Adicionar Nova Conta", "Sacar", "Depositar", "Tirar Extrato"};
+            string[] opcoesCorrente ={"Adicionar Nova Conta", "Sacar", "Depositar", "Tirar Extrato", "Transferir"};
             int opcaoEscolhida = ExibirMenuContas("MENU CORRENTE", opcoesCorrente, "conta corrente");
             MetodosCorrente(opcaoEscolhida);
         }
@@ -117,7 +121,7 @@ namespace Services{
 
         public void ChamarMetodosPoupanca()
         {
-            string[] opcoesCorrente ={"Adicionar Nova Conta", "Sacar", "Depositar", "Tirar Extrato"};
+            string[] opcoesCorrente ={"Adicionar Nova Conta", "Sacar", "Depositar", "Tirar Extrato", "Transferir"};
             int opcaoEscolhida = ExibirMenuContas("MENU POUPANÇA", opcoesCorrente, "conta poupança");
             MetodosPoupanca(opcaoEscolhida);
         }
@@ -140,6 +144,10 @@ namespace Services{
                 
                 case 4:
                     ChamarImprimirExtrato(typeof(ContaPoupanca));
+                    break;
+
+                case 5:
+                    ChamarTransferir(typeof(ContaPoupanca));
                     break;
             }
         }
@@ -337,6 +345,29 @@ namespace Services{
             }
 
             conta.imprimirExtrato();
+        }
+
+        public void ChamarTransferir(Type tipoConta)
+        {
+            Interface.DecorarModulo("TRANSFERÊNCIA BANCÁRIA");
+            Console.Write("Confirme o número da conta de origem: ");
+            int numeroContaOrigem = int.Parse(Console.ReadLine());
+
+            Console.Write("Informe o número da conta de destino: ");
+            int numeroContaDestino = int.Parse(Console.ReadLine());
+
+            Conta contaOrigem = Geral.BuscarContas(numeroContaOrigem, ExisteContasCadastradas(), listaContas, tipoConta);
+            Conta contaDestino = Geral.BuscarContas(numeroContaDestino, ExisteContasCadastradas(), listaContas);
+            if(contaOrigem == null || contaDestino == null)
+            {
+                Console.WriteLine("Conta não encontrada\n");
+                return;
+            }
+
+            Console.Write("Informe o valor desejado: ");
+            double valorTransferencia = double.Parse(Console.ReadLine());
+            contaOrigem.Transferir(contaDestino, valorTransferencia);
+            Console.WriteLine("\nTransferência realizada com sucesso.\n");
         }
 
         public void ExibirListaClientes()

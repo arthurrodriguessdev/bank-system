@@ -20,7 +20,7 @@ namespace Models{
             Saldo = 0.0;
             DataAbertura = DateTime.Now;
             listaMovimentacoes = new List<Movimentacao>();
-            RegistrarMovimentao(Enums.TipoMovimentacao.ABERTURA_CONTA);
+            RegistrarMovimentao(TipoMovimentacao.ABERTURA_CONTA);
         }
 
         public virtual void Sacar(double valorSaque)
@@ -38,7 +38,7 @@ namespace Models{
             Saldo -= valorSaque; 
 
             // Registrando a movimentação de saque
-            RegistrarMovimentao(Enums.TipoMovimentacao.SAQUE, valorSaque);
+            RegistrarMovimentao(TipoMovimentacao.SAQUE, valorSaque);
         }
 
         public void Depositar(double valorDeposito)
@@ -56,7 +56,7 @@ namespace Models{
             Console.WriteLine(Saldo);
 
             // Registrando a movimentação de depósito
-            RegistrarMovimentao(Enums.TipoMovimentacao.DEPOSITO, valorDeposito);
+            RegistrarMovimentao(TipoMovimentacao.DEPOSITO, valorDeposito);
         }
 
         public void Transferir(Conta contaDestino, double valorTransferir){
@@ -70,12 +70,13 @@ namespace Models{
 
             Saldo -= valorTransferir;
             contaDestino.Depositar(valorTransferir);
+            RegistrarMovimentao(TipoMovimentacao.TRANSFERENCIA, valorTransferir);
         }
 
         public void RegistrarMovimentao(TipoMovimentacao tipo, double valor = 0){
             Movimentacao novaMovimentacao;
 
-            if (tipo == Enums.TipoMovimentacao.ABERTURA_CONTA)
+            if (tipo == TipoMovimentacao.ABERTURA_CONTA)
             {
                 novaMovimentacao = new Movimentacao(tipo);
             }
