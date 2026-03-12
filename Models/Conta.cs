@@ -34,6 +34,9 @@ namespace Models{
             }
 
             Saldo -= valorSaque; 
+
+            // Registrando a movimentação de saque
+            RegistrarMovimentao(Enums.TipoMovimentacao.SAQUE, valorSaque);
         }
 
         public void Depositar(double valorDeposito)
@@ -48,6 +51,10 @@ namespace Models{
             }
 
             Saldo += valorDeposito;
+            Console.WriteLine(Saldo);
+
+            // Registrando a movimentação de depósito
+            RegistrarMovimentao(Enums.TipoMovimentacao.DEPOSITO, valorDeposito);
         }
 
         public void Transferir(Conta contaDestino, double valorTransferir){
@@ -80,6 +87,18 @@ namespace Models{
             listaMovimentacoes.Add(novaMovimentacao);
         }
 
-        public abstract void ImprimirExtrato();
+        public void imprimirExtrato()
+        {
+            if(listaMovimentacoes.Count <= 0)
+            {
+                return;
+            }
+
+            Console.WriteLine("=== EXTRATO DA CONTA ===\n");
+            for(int i = 0; i < listaMovimentacoes.Count ; i++)
+            {
+                Console.WriteLine($"{listaMovimentacoes[i]}");
+            }
+        }
     }
 }

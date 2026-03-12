@@ -50,6 +50,10 @@ namespace Services{
                 case 3:
                     ChamarMetodosCorrente();
                     break;
+                
+                case 4:
+                    ChamarImprimirExtrato(typeof(ContaCorrente));
+                    break;
 
             }
         }
@@ -88,7 +92,7 @@ namespace Services{
 
         public void ChamarMetodosCorrente()
         {
-            string[] opcoesCorrente ={"Adicionar Nova Conta", "Sacar", "Depositar"};
+            string[] opcoesCorrente ={"Adicionar Nova Conta", "Sacar", "Depositar", "Tirar Extrato"};
             int opcaoEscolhida = ExibirMenuContas("MENU CORRENTE", opcoesCorrente, "conta corrente");
             MetodosCorrente(opcaoEscolhida);
         }
@@ -113,7 +117,7 @@ namespace Services{
 
         public void ChamarMetodosPoupanca()
         {
-            string[] opcoesCorrente ={"Adicionar Nova Conta", "Sacar", "Depositar"};
+            string[] opcoesCorrente ={"Adicionar Nova Conta", "Sacar", "Depositar", "Tirar Extrato"};
             int opcaoEscolhida = ExibirMenuContas("MENU POUPANÇA", opcoesCorrente, "conta poupança");
             MetodosPoupanca(opcaoEscolhida);
         }
@@ -132,6 +136,10 @@ namespace Services{
                 
                 case 3:
                     Depositar("DEPOSITAR POUPANÇA", typeof(ContaPoupanca));
+                    break;
+                
+                case 4:
+                    ChamarImprimirExtrato(typeof(ContaPoupanca));
                     break;
             }
         }
@@ -281,8 +289,10 @@ namespace Services{
             if(contaBuscada != null){
                 Console.Write("Informe o valor de depósito: ");
                 double valorDeposito = double.Parse(Console.ReadLine());
+                Console.Write(valorDeposito);
 
                 try{
+                    Console.WriteLine("ene");
                     contaBuscada.Depositar(valorDeposito);
                     Console.WriteLine($"Depósito realizado com sucesso. Saldo atual: {contaBuscada.Saldo:F2}\n");
 
@@ -315,6 +325,21 @@ namespace Services{
             return; 
         }
         #endregion
+
+        public void ChamarImprimirExtrato(Type tipoConta)
+        {
+            Console.Write("Informe o número da conta que deseja consultar o extrato: ");
+            int numeroConta = int.Parse(Console.ReadLine());
+
+            Conta conta = Geral.BuscarContas(numeroConta, ExisteContasCadastradas(), listaContas, tipoConta);
+            if(conta == null)
+            {
+                Console.WriteLine("Conta não encontrada\n");
+                return;
+            }
+
+            conta.imprimirExtrato();
+        }
 
         public void ExibirListaClientes()
         {
