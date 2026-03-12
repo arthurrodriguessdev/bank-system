@@ -289,10 +289,8 @@ namespace Services{
             if(contaBuscada != null){
                 Console.Write("Informe o valor de depósito: ");
                 double valorDeposito = double.Parse(Console.ReadLine());
-                Console.Write(valorDeposito);
 
                 try{
-                    Console.WriteLine("ene");
                     contaBuscada.Depositar(valorDeposito);
                     Console.WriteLine($"Depósito realizado com sucesso. Saldo atual: {contaBuscada.Saldo:F2}\n");
 

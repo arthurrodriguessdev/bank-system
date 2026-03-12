@@ -19,6 +19,8 @@ namespace Models{
             Titular = titular;
             Saldo = 0.0;
             DataAbertura = DateTime.Now;
+            listaMovimentacoes = new List<Movimentacao>();
+            RegistrarMovimentao(Enums.TipoMovimentacao.ABERTURA_CONTA);
         }
 
         public virtual void Sacar(double valorSaque)
@@ -43,11 +45,11 @@ namespace Models{
         {
             if(valorDeposito <= 0)
             {
-                throw new ArgumentOutOfRangeException("O valor do depósito deve ser maior que zero.");
+                throw new ArgumentOutOfRangeException("\nO valor do depósito deve ser maior que zero.\n");
             } 
             
             if(valorDeposito < VALOR_MINIMO_DEPOSITO){
-                throw new InvalidOperationException($"O valor mínimo para depósito é de R${VALOR_MINIMO_DEPOSITO}");
+                throw new InvalidOperationException($"\nO valor mínimo para depósito é de R${VALOR_MINIMO_DEPOSITO}\n");
             }
 
             Saldo += valorDeposito;
@@ -59,11 +61,11 @@ namespace Models{
 
         public void Transferir(Conta contaDestino, double valorTransferir){
             if(contaDestino == null){
-                throw new ArgumentNullException("A conta de destino não foi encontrada.");
+                throw new ArgumentNullException("\nA conta de destino não foi encontrada.\n");
             }
 
             else if(valorTransferir > Saldo){
-                throw new InvalidOperationException("A conta de origem não possui esse valor para transferir");
+                throw new InvalidOperationException("\nA conta de origem não possui esse valor para transferir\n");
             }
 
             Saldo -= valorTransferir;
@@ -73,14 +75,14 @@ namespace Models{
         public void RegistrarMovimentao(TipoMovimentacao tipo, double valor = 0){
             Movimentacao novaMovimentacao;
 
-            if(tipo != Enums.TipoMovimentacao.ABERTURA_CONTA && valor <= 0){
-                throw new ArgumentException("Movimentações devem possuir valor.");
-
-            } else if(tipo == Enums.TipoMovimentacao.ABERTURA_CONTA){
+            if (tipo == Enums.TipoMovimentacao.ABERTURA_CONTA)
+            {
                 novaMovimentacao = new Movimentacao(tipo);
             }
-            
-            else{
+            else
+            {
+                if (valor <= 0)
+                    throw new ArgumentException("\nMovimentações devem possuir valor.\n");
                 novaMovimentacao = new Movimentacao(tipo, valor);
             }
 
@@ -99,6 +101,7 @@ namespace Models{
             {
                 Console.WriteLine($"{listaMovimentacoes[i]}");
             }
+            Console.Write("\n");
         }
     }
 }
